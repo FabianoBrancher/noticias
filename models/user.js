@@ -9,10 +9,12 @@ const UserSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true
+    },
+    roles: {
+        type: [String],
+        enum: ['restrito', 'admin']
     }
 })
-
-
 
 UserSchema.pre('save', function(next) {
     const user = this
@@ -29,6 +31,18 @@ UserSchema.pre('save', function(next) {
     })
 
 })
+
+UserSchema.methods.checkPassword = function(password) {
+    return new Promise((resolve, reject) => {
+        bcrypt.compare(password, this.password, (err, isMatch) => {
+            if (err) {
+                reject(err)
+            } else {
+                resolve(isMatch)
+            }
+        })
+    })
+}
 
 const User = mongoose.model('User', UserSchema)
 
