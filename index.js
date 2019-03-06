@@ -90,5 +90,5 @@ const user = new User({
     password: 'abc123'
 })
 
-user.save( () => console.log('opa'))
+user.save( () => console.log('opaaa'))
 */
